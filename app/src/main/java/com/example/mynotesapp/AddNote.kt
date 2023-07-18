@@ -9,15 +9,16 @@ import android.widget.Toast
 import com.example.mynotesapp.databinding.ActivityAddNoteBinding
 import com.example.mynotesapp.databinding.ActivityMainBinding
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.logging.SimpleFormatter
+//import java.util.logging.SimpleFormatter
 import java.util.zip.DataFormatException
 
 class AddNote : AppCompatActivity() {
     private lateinit var binding: ActivityAddNoteBinding
 
-    private lateinit var note:Note
-    private lateinit var old_note:Note
+    private lateinit var note: com.example.mynotesapp.Models.Note
+    private lateinit var old_note: com.example.mynotesapp.Models.Note
     var isUpdate=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,7 @@ class AddNote : AppCompatActivity() {
         setContentView(binding.root)
 
         try{
-            old_note=intent.getSerializableExtra("current_note")as note
+            old_note=intent.getSerializableExtra("current_note")as com.example.mynotesapp.Models.Note
             binding.editTitle.setText(old_note.title)
             binding.editNote.setText(old_note.note)
             isUpdate=true
@@ -36,17 +37,17 @@ class AddNote : AppCompatActivity() {
         }
         binding.imgCheck.setOnClickListener{
             val title=binding.editTitle.text.toString()
-            val note=binding.editNote.text.toString()
+            val note_desc=binding.editNote.text.toString()
 
-            if(title.isEmpty()||note.isNotEmpty()){
-                val formatter=SimpleFormatter("dd MMM YYYY-HH:mm")
+            if(title.isEmpty()||note_desc.isNotEmpty()){
+                val formatter=SimpleDateFormat("EEE,d MMM YYYY HH:mm a")
                 if(isUpdate){
-                    note= Note(
-                        old_note,title,note,formatter(Date())
+                    note= com.example.mynotesapp.Models.Note(
+                        old_note.id, title, note_desc, formatter.format(Date())
                     )
 
                 }else{
-                    note= Note(
+                    note= com.example.mynotesapp.Models.Note(
                         null, title, note_desc, formatter.format(Date())
                     )
                 }

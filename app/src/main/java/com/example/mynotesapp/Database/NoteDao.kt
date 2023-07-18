@@ -6,20 +6,23 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.mynotesapp.Models.Note
 
 @Dao
 interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(note:Note)
+    fun insert(note:Note)
 
     @Delete
-    suspend fun delete(note: Note)
+    fun delete(note: Note)
 
     @Query("SELECT * from notes_table order by id ASC")
     fun getAllNotes(): LiveData<List<Note>>
-
-    @Query("UPDATE notes_table set title=:title,note=:note WHERE id=:id")
-    suspend fun update(id:Int?,title:String?,note:String?)
+//
+//    @Query("UPDATE notes_table set title=:title,note=:note WHERE id=:id")
+//    suspend fun update(id:Int?,title:String?,note:String?)
+    @Update
+    fun update(note: Note)
 }

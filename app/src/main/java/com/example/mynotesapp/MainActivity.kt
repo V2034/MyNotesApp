@@ -4,14 +4,14 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Note
+//import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.cardview.widget.CardView
-import androidx.lifecycle.ViewModel
+//import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.mynotesapp.Adapter.NotesAdapter
@@ -25,11 +25,11 @@ class MainActivity : AppCompatActivity(),NotesAdapter.NotesClickListener,PopupMe
     private lateinit var database: NoteDatabase
     lateinit var viewModel:NotesViewModel
     lateinit var adapter: NotesAdapter
-    lateinit var seletedNote:Note
+    lateinit var seletedNote:com.example.mynotesapp.Models.Note
 
     private val updateNote=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result->
         if(result.resultCode==Activity.RESULT_OK){
-            val note=result.data?.getSerializableExtra("note") as? Note
+            val note=result.data?.getSerializableExtra("note") as? com.example.mynotesapp.Models.Note
             if(note!=null){
                 viewModel.updateNote(note)
             }
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(),NotesAdapter.NotesClickListener,PopupMe
 
         val getContent=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){result->
             if(result.resultCode== Activity.RESULT_OK){
-                val note=result.data?.getSerializableExtra("note") as? Note
+                val note=result.data?.getSerializableExtra("note") as? com.example.mynotesapp.Models.Note
                 if(note!=null){
                     viewModel.addNote(note)
                 }
@@ -91,13 +91,13 @@ class MainActivity : AppCompatActivity(),NotesAdapter.NotesClickListener,PopupMe
 
     }
 
-    override fun OnItemClicked(note: com.example.mynotesapp.Models.Note) {
+    override fun OnItemClicked(note:com.example.mynotesapp.Models.Note) {
         val intent=Intent(this@MainActivity,AddNote::class.java)
         intent.putExtra("current_note",note)
         updateNote.launch(intent)
     }
 
-    override fun OnItemLongClicked(note: com.example.mynotesapp.Models.Note, cardView: CardView) {
+    override fun OnItemLongClicked(note : com.example.mynotesapp.Models.Note, cardView: CardView) {
         seletedNote=note
         popUpDisplay(cardView)
     }
@@ -116,4 +116,6 @@ class MainActivity : AppCompatActivity(),NotesAdapter.NotesClickListener,PopupMe
         }
         return false
     }
+
+
 }
