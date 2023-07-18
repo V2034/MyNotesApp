@@ -10,24 +10,26 @@ import com.example.mynotesapp.Database.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NotesViewModel(application: Application):AndroidViewModel(application) {
+class NotesViewModel(application: Application) : AndroidViewModel(application) {
 
-    val allNotes:LiveData<List<Note>>
-    val repository:NoteRepository
+    val allNotes: LiveData<List<Note>>
+    val repository: NoteRepository
 
     init {
-        val dao=NoteDatabase.getDatabase(application).getNoteDao()
-        repository= NoteRepository(dao)
-        allNotes=repository.allNotes
+        val dao = NoteDatabase.getDatabase(application).getNoteDao()
+        repository = NoteRepository(dao)
+        allNotes = repository.allNotes
     }
 
-    fun deleteNote(note:Note)=viewModelScope.launch(Dispatchers.IO) {
+    fun deleteNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(note)
     }
-    fun updateNote(note:Note)=viewModelScope.launch(Dispatchers.IO) {
+
+    fun updateNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
         repository.update(note)
     }
-   fun addNote(note:Note)=viewModelScope.launch(Dispatchers.IO) {
+
+    fun addNote(note: Note) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(note)
     }
 }

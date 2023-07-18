@@ -19,48 +19,49 @@ class AddNote : AppCompatActivity() {
 
     private lateinit var note: com.example.mynotesapp.Models.Note
     private lateinit var old_note: com.example.mynotesapp.Models.Note
-    var isUpdate=false
+    var isUpdate = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding= ActivityAddNoteBinding.inflate(layoutInflater)
+        binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        try{
-            old_note=intent.getSerializableExtra("current_note")as com.example.mynotesapp.Models.Note
+        try {
+            old_note =
+                intent.getSerializableExtra("current_note") as com.example.mynotesapp.Models.Note
             binding.editTitle.setText(old_note.title)
             binding.editNote.setText(old_note.note)
-            isUpdate=true
-        }catch (e:Exception){
+            isUpdate = true
+        } catch (e: Exception) {
             e.printStackTrace()
         }
-        binding.imgCheck.setOnClickListener{
-            val title=binding.editTitle.text.toString()
-            val note_desc=binding.editNote.text.toString()
+        binding.imgCheck.setOnClickListener {
+            val title = binding.editTitle.text.toString()
+            val note_desc = binding.editNote.text.toString()
 
-            if(title.isEmpty()||note_desc.isNotEmpty()){
-                val formatter=SimpleDateFormat("EEE,d MMM YYYY HH:mm a")
-                if(isUpdate){
-                    note= com.example.mynotesapp.Models.Note(
+            if (title.isEmpty() || note_desc.isNotEmpty()) {
+                val formatter = SimpleDateFormat("EEE,d MMM YYYY HH:mm a")
+                if (isUpdate) {
+                    note = com.example.mynotesapp.Models.Note(
                         old_note.id, title, note_desc, formatter.format(Date())
                     )
 
-                }else{
-                    note= com.example.mynotesapp.Models.Note(
+                } else {
+                    note = com.example.mynotesapp.Models.Note(
                         null, title, note_desc, formatter.format(Date())
                     )
                 }
-                val intent=Intent()
-                intent.putExtra("note",note)
-                setResult(Activity.RESULT_OK,intent)
+                val intent = Intent()
+                intent.putExtra("note", note)
+                setResult(Activity.RESULT_OK, intent)
                 finish()
-            }else{
-                Toast.makeText(this@AddNote,"Please enter some data",Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this@AddNote, "Please enter some data", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
         }
-        binding.idBackArrow.setOnClickListener{
+        binding.idBackArrow.setOnClickListener {
             onBackPressed()
         }
     }
